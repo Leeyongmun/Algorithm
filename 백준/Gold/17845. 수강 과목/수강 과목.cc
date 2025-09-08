@@ -9,23 +9,18 @@ using namespace std;
 
 int n, k;
 int w[1001], t[1001];
-vector<int> dp[1001];
+vector<int> dp;
 
 int main() {
 	cin >> n >> k;
-	for (int i = 0; i < 1001; i++) {
-		dp[i].resize(n + 1);
-	}
+	dp.resize(10001);
 	for (int i = 1; i <= k; i++) {
 		cin >> w[i] >> t[i];
 	}
 	for (int i = 1; i <= k; i++) {
-		for (int j = 1; j <= n; j++) {
-			dp[i][j] = dp[i - 1][j];
-			if (j >= t[i]) {
-				dp[i][j] = max(dp[i][j], dp[i - 1][j - t[i]] + w[i]);
-			}
+		for (int j = n; j >= t[i]; j--) {
+			dp[j] = max(dp[j], dp[j - t[i]] + w[i]);
 		}
 	}
-	cout << *max_element(dp[k].begin(), dp[k].end());
+	cout << *max_element(dp.begin(), dp.end());
 }

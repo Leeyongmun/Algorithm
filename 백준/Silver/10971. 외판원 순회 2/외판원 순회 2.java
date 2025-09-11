@@ -17,24 +17,25 @@ public class Main {
         }
         visited = new boolean[n];
         visited[0] = true;
-        solve(0, 0, 0);
+        dfs(0, 0, 0);
         System.out.println(ret);
     }
-    
-    private static void solve(int now, int cnt, int sum){
+
+    private static void dfs(int cur, int sum, int cnt){
         if(sum >= ret) return;
         if(cnt == n - 1){
-            if(a[now][0] > 0){
-                ret = Math.min(ret, sum + a[now][0]);
+            if(a[cur][0] > 0){
+                ret = Math.min(ret, sum + a[cur][0]);
             }
             return;
         }
+        
+        visited[cur] = true;
         for(int i = 0; i < n; i++){
+            if(a[cur][i] == 0) continue;
             if(visited[i]) continue;
-            if(a[now][i] == 0) continue;
-            visited[i] = true;
-            solve(i ,cnt + 1, sum + a[now][i]);
-            visited[i] = false;
+            dfs(i, sum + a[cur][i], cnt + 1);
         }
+        visited[cur] = false;
     }
 }

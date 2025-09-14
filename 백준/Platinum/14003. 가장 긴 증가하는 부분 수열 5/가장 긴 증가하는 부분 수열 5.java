@@ -9,6 +9,7 @@ public class Main {
     static int[] a;
     static int[] dp;
     static int[] pos, prev;
+    static StringBuilder ret = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -41,6 +42,7 @@ public class Main {
                 prev[i] = tmp > 0 ? pos[tmp - 1] : -1;
             }
         }
+        ret.append(cnt).append('\n');
 
         int cur = pos[idx];
         Stack<Integer> stk = new Stack<>();
@@ -48,11 +50,11 @@ public class Main {
             stk.push(a[cur]);
             cur = prev[cur];
         }
-        System.out.println(cnt);
         int size = stk.size();
         for(int i = 0; i < size; i++){
-            System.out.print(stk.pop() + " ");
+            ret.append(stk.pop()).append(" ");
         }
+        System.out.println(ret);
     }
 
     private static int lower_bound(int end, int x){

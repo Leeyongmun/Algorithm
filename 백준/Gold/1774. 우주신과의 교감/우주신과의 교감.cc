@@ -7,25 +7,13 @@
 #include<string>
 #include<unordered_set>
 #include<cmath>
+#include<queue>
 using namespace std;
 
 int n, m;
 vector<pair<int, int>> v;
-vector<tuple<double, int, int>> graph;
-int parent[1001];
-
-int find(int x) {
-	if (parent[x] == x) return x;
-	return parent[x] = find(parent[x]);
-}
-
-bool merge(int x, int y) {
-	x = find(x);
-	y = find(y);
-	if (x == y) return false;
-	parent[x] = y;
-	return true;
-}
+vector<pair<double, int>> graph[1001];
+bool visited[1001];
 
 int main() {
 	cin >> n >> m;
@@ -35,31 +23,42 @@ int main() {
 	}
 	for (int i = 1; i <= n; i++) {
 		for (int j = i + 1; j <= n; j++) {
-			graph.push_back({ sqrt(pow(v[i].first - v[j].first, 2) + pow(v[i].second - v[j].second, 2)), i, j });
+			double cost = sqrt(pow(v[i].first - v[j].first, 2) + pow(v[i].second - v[j].second, 2));
+			graph[i].push_back({ cost, j });
+			graph[j].push_back({ cost, i });
 		}
 	}
-	sort(graph.begin(), graph.end());
-	for (int i = 1; i <= n; i++) {
-		parent[i] = i;
-	}
-	int cnt = 0;
 	for (int i = 0; i < m; i++) {
 		int a, b;
 		cin >> a >> b;
-		if (merge(a, b)) cnt++;
+		graph[a].push_back({ 0, b });
+		graph[b].push_back({ 0, a });
 	}
 	double ret = 0;
-	
-	for (auto g : graph) {
-		double cost = get<0>(g);
-		int a = get<1>(g);
-		int b = get<2>(g);
-		if (merge(a, b)) {
-			ret += cost;
-			cnt++;
+	int cnt = 0;
+
+	priority_queue<pair<double, int>, vector<pair<double, int>>, greater<pair<double, int>>> pq;
+	pq.push({ 0, 1 });
+
+	while (!pq.empty()) {
+		double cost = pq.top().first;
+		int cur = pq.top().second;
+		pq.pop();
+
+		if (visited[cur]) continue;
+		visited[cur] = true;
+		ret += cost;
+		cnt++;
+		
+		if (cnt == n) break;
+
+		for (auto p : graph[cur]) {
+			if (!visited[p.second]) {
+				pq.push(p);
+			}
 		}
-		if (cnt == n - 1) break;
 	}
+
 	cout << fixed;
 	cout.precision(2);
 	cout << ret;

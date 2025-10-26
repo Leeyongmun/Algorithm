@@ -1,47 +1,42 @@
 #include<iostream>
+#include<vector>
 #include<algorithm>
 #include<unordered_map>
-#include<vector>
 #include<queue>
+
 using namespace std;
 
 int n, m;
-vector<pair<int, int>> v[1001];
-vector<int> dist;
-
-void dijkstra(int start) {
-	dist[start] = 0;
-	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-	pq.push({ 0, start });
-	while (!pq.empty()) {
-		auto now = pq.top();
-		pq.pop();
-		int cur = now.second;
-		int cost = now.first;
-		if (dist[cur] < cost) continue;
-		for (auto p : v[cur]) {
-			int next = p.second;
-			int nextCost = p.first;
-			if (dist[next] > dist[cur] + nextCost) {
-				dist[next] = dist[cur] + nextCost;
-				pq.push({ dist[next], next });
-			}
-		}
-	}
-}
+vector<pair<int, int>> graph[1001];
 
 int main() {
 	ios::sync_with_stdio(false);
-	cin.tie(NULL); cout.tie(NULL);
+	cin.tie(NULL);
 	cin >> n >> m;
-	dist.assign(n + 1, 987654321);
 	for (int i = 0; i < m; i++) {
 		int from, to, cost;
 		cin >> from >> to >> cost;
-		v[from].push_back({ cost, to });
+		graph[from].push_back({ to, cost });
 	}
-	int start, end;
-	cin >> start >> end;
-	dijkstra(start);
-	cout << dist[end];
+	int s, e;
+	cin >> s >> e;
+	vector<int> dist(n + 1, 987654321);
+	priority_queue < pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+	pq.push({ 0, s });
+	dist[s] = 0;
+	while (!pq.empty()) {
+		int cur = pq.top().second;
+		int cost = pq.top().first;
+		pq.pop();
+		if (dist[cur] < cost) continue;
+		for (auto p : graph[cur]) {
+			int next = p.first;
+			int nc = cost + p.second;
+			if (dist[next] > nc) {
+				dist[next] = nc;
+				pq.push({ nc, next });
+			}
+		}
+	}
+	cout << dist[e];
 }

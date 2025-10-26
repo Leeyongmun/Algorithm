@@ -35,7 +35,7 @@ int main() {
 	queue<Info> q;
 	q.push(Info(1, 1, 0, 0));
 	visited[1][1][0] = 0;
-	
+
 	while (!q.empty()) {
 		Info cur = q.front();
 		q.pop();
@@ -65,12 +65,11 @@ int main() {
 					q.push(Info(ny, nx, cnt + 1, time + 1));
 				}
 				else {
-					visited[y][x][cnt] = time + 1;
 					q.push(Info(y, x, cnt, time + 1));
 				}
 			}
 		}
 	}
-	
+
 	cout << -1;
 }

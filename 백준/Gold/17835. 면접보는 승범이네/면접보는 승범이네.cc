@@ -1,59 +1,58 @@
 #include<iostream>
-#include<algorithm>
-#include<unordered_map>
 #include<vector>
+#include<algorithm>
+#include<cmath>
+#include<map>
+#include<unordered_map>
+#include<set>
+#include<unordered_set>
+#include<deque>
 #include<queue>
+#include<string>
+
 using namespace std;
 
 int n, m, k;
-long long ret = -1;
-int idx = -1;
-vector<pair<int, int>> v[100001];
-vector<long long> dist;
-vector<int> interview;
+vector<pair<int, int>> graph[100001];
+vector<long long> dist(100001, 10000000003);
+long long mx = 0;
 
-void dijkstra() {
-	dist.assign(n + 1, 30000000000);
-	priority_queue<pair<long long, int>> pq;
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n >> m >> k;
+	for (int i = 0; i < m; i++) {
+		int a, b, c;
+		cin >> a >> b >> c;
+		graph[b].push_back({ a, c });
+	}
+	priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
 	for (int i = 0; i < k; i++) {
-		dist[interview[i]] = 0;
-		pq.push({ 0, interview[i] });
+		int p;
+		cin >> p;
+		pq.push({ 0, p });
+		dist[p] = 0;
 	}
 	while (!pq.empty()) {
+		long long cost = pq.top().first;
 		int cur = pq.top().second;
-		long long cost = -pq.top().first;
 		pq.pop();
 		if (dist[cur] < cost) continue;
-		for (auto p : v[cur]) {
+		for (auto p : graph[cur]) {
 			int next = p.first;
-			int nCost = p.second;
-			long long nd = cost + nCost;
-			if (dist[next] > nd) {
-				dist[next] = nd;
-				pq.push({ -nd, next });
+			long long nc = cost + p.second;
+			if (dist[next] > nc) {
+				dist[next] = nc;
+				pq.push({ nc, next });
 			}
 		}
 	}
+	int idx = 0;
 	for (int i = 1; i <= n; i++) {
-		if (dist[i] != 30000000000 && dist[i] > ret) {
-			ret = dist[i];
+		if (dist[i] != 987654321 && dist[i] > mx) {
+			mx = dist[i];
 			idx = i;
 		}
 	}
-}
-
-int main() {
-	cin >> n >> m >> k;
-	dist.resize(n + 1);
-	interview.resize(k);
-	for (int i = 0; i < m; i++) {
-		int from, to, cost;
-		cin >> from >> to >> cost;
-		v[to].push_back({ from, cost });
-	}
-	for (int i = 0; i < k; i++) {
-		cin >> interview[i];
-	}
-	dijkstra();
-	cout << idx << '\n' << ret;
+	cout << idx << '\n' << mx;
 }

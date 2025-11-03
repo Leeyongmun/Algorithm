@@ -1,21 +1,28 @@
 #include<iostream>
+#include<vector>
 #include<algorithm>
-#include<string>
-#include<queue>
+#include<map>
 #include<unordered_map>
+#include<unordered_set>
+#include<deque>
+#include<string>
+#include<cmath>
+#include<set>
+#include<queue>
+
 using namespace std;
 
 int n, m;
-vector<vector<int>> v1, v2;
+vector<int> v1[501];
+vector<int> v2[501];
 int visited[501];
 
-int dfs(int cur, vector<vector<int>> &v) {
+int dfs(vector<int> v[], int cur) {
 	int cnt = 0;
 	visited[cur] = 1;
 	for (int next : v[cur]) {
 		if (visited[next]) continue;
-		visited[next] = 1;
-		cnt += 1 + dfs(next, v);
+		cnt += dfs(v, next) + 1;
 	}
 	return cnt;
 }
@@ -25,23 +32,20 @@ int main() {
 	cin.tie(NULL);
 
 	cin >> n >> m;
-	v1.resize(n + 1);
-	v2.resize(n + 1);
-
 	for (int i = 0; i < m; i++) {
 		int a, b;
 		cin >> a >> b;
 		v1[a].push_back(b);
 		v2[b].push_back(a);
 	}
-
 	int ret = 0;
+
 	for (int i = 1; i <= n; i++) {
 		fill(visited, visited + 501, 0);
-		int big = dfs(i, v1);
+		int a = dfs(v1, i);
 		fill(visited, visited + 501, 0);
-		int small = dfs(i, v2);
-		if (big + small == n - 1) ret++;
+		int b = dfs(v2, i);
+		if (a + b == n - 1) ret++;
 	}
 	cout << ret;
 }

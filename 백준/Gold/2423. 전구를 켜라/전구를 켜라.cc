@@ -39,26 +39,27 @@ int main() {
 		int x = dq.front()[1];
 		int s = dq.front()[2];
 		dq.pop_front();
-		if (s == 0) {
-			for (int i = 0; i < 4; i++) {
-				int ny = y + dy1[i];
-				int nx = x + dx1[i];
-				if (ny < 0 || nx < 0 || ny >= n || nx >= m) continue;
-				if (s == a[ny][nx]) {
-					int ns = (s + 1) % 2;
-					if (visited[ny][nx][ns] > visited[y][x][s] + 1) {
-						visited[ny][nx][ns] = visited[y][x][s] + 1;
-						dq.push_back({ ny, nx, ns });
-					}
-				}
-				else {
-					int ns = a[ny][nx];
-					if (visited[ny][nx][ns] > visited[y][x][s]) {
-						visited[ny][nx][ns] = visited[y][x][s];
-						dq.push_front({ ny, nx, ns });
-					}
+		for (int i = 0; i < 4; i++) {
+			int ny = y + dy1[i];
+			int nx = x + dx1[i];
+			if (ny < 0 || nx < 0 || ny >= n || nx >= m) continue;
+			if (s == a[ny][nx]) {
+				int ns = (s + 1) % 2;
+				if (visited[ny][nx][ns] > visited[y][x][s] + 1) {
+					visited[ny][nx][ns] = visited[y][x][s] + 1;
+					dq.push_back({ ny, nx, ns });
 				}
 			}
+			else {
+				int ns = a[ny][nx];
+				if (visited[ny][nx][ns] > visited[y][x][s]) {
+					visited[ny][nx][ns] = visited[y][x][s];
+					dq.push_front({ ny, nx, ns });
+				}
+			}
+		}
+		if (s == 0) {
+			
 			for (int i = 0; i < 2; i++) {
 				int ny = y + dy2[i];
 				int nx = x + dx2[i];
@@ -79,25 +80,6 @@ int main() {
 			}
 		}
 		else {
-			for (int i = 0; i < 4; i++) {
-				int ny = y + dy1[i];
-				int nx = x + dx1[i];
-				if (ny < 0 || nx < 0 || ny >= n || nx >= m) continue;
-				if (s == a[ny][nx]) {
-					int ns = (s + 1) % 2;
-					if (visited[ny][nx][ns] > visited[y][x][s] + 1) {
-						visited[ny][nx][ns] = visited[y][x][s] + 1;
-						dq.push_back({ ny, nx, ns });
-					}
-				}
-				else {
-					int ns = a[ny][nx];
-					if (visited[ny][nx][ns] > visited[y][x][s]) {
-						visited[ny][nx][ns] = visited[y][x][s];
-						dq.push_front({ ny, nx, ns });
-					}
-				}
-			}
 			for (int i = 2; i < 4; i++) {
 				int ny = y + dy2[i];
 				int nx = x + dx2[i];

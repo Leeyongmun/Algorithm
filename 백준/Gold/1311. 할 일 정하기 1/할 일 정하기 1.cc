@@ -13,6 +13,15 @@ int n;
 int a[21][21];
 vector<int> dp, ndp;
 
+int bit_count(int x) {
+	int cnt = 0;
+	while (x) {
+		x &= (x - 1);
+		cnt++;
+	}
+	return cnt;
+}
+
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
@@ -27,17 +36,14 @@ int main() {
 	}
 	dp[0] = 0;
 
-	for (int i = 0; i < n; i++) {
-		ndp = dp;
-		for (int mask = 0; mask < (1 << n); mask++) {
-			if (dp[mask] == 987654321) continue;
-			for (int j = 0; j < n; j++) {
-				if (mask & (1 << j)) continue;
-				int nmask = mask | (1 << j);
-				ndp[nmask] = min(ndp[nmask], dp[mask] + a[i][j]);
-			}
+	for (int mask = 0; mask < (1 << n); mask++) {
+		int i = bit_count(mask);
+		if (i >= n) continue;
+		for (int j = 0; j < n; j++) {
+			if (mask & (1 << j)) continue;
+			int nmask = mask | (1 << j);
+			dp[nmask] = min(dp[nmask], dp[mask] + a[i][j]);
 		}
-		dp = ndp;
 	}
 	cout << dp[(1 << n) - 1];
 }

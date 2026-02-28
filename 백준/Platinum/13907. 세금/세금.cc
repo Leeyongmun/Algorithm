@@ -57,6 +57,13 @@ int main() {
 			int nc = cn.cost + p.second;
 			int ncnt = cn.cnt + 1;
 			if (ncnt >= n) continue;
+
+			long long best = INF;
+			for (int i = 0; i <= ncnt; i++) {
+				best = min(best, dist[next][i]);
+			}
+			if (best <= nc) continue;
+
 			if (dist[next][ncnt] > nc) {
 				dist[next][ncnt] = nc;
 				pq.push({ next, nc, ncnt });

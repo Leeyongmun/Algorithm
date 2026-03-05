@@ -6,7 +6,7 @@
 using namespace std;
 
 int n, m, r;
-set<int> graph[100001];
+vector<int> graph[100001];
 int visited[100001];
 int cnt = 1;
 
@@ -28,8 +28,12 @@ int main()
 	for (int i = 0; i < m; i++) {
 		int a, b;
 		cin >> a >> b;
-		graph[a].insert(b);
-		graph[b].insert(a);
+		graph[a].push_back(b);
+		graph[b].push_back(a);
+	}
+
+	for (int i = 1; i <= n; i++) {
+		sort(graph[i].begin(), graph[i].end());
 	}
 
 	dfs(r);

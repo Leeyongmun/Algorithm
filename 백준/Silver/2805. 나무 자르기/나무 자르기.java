@@ -1,30 +1,44 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static int n, k;
+    static int n, m;
     static int[] a;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
-        k = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+
         a = new int[n];
-        int r = -1;
+
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            a[i] = Integer.parseInt(st.nextToken());
+        }
+
         int l = 0;
-        for(int i = 0; i < n; i++){
-            a[i] = sc.nextInt();
-            r = Math.max(r, a[i]);
-        }
-        while(l <= r){
-            int m = (l + r) / 2;
-            long cnt = 0;
-            for(int i = 0; i < n; i++){
-                if(a[i] > m) cnt += (long)a[i] - m;
-                if(cnt >= k) break;
+        int r = 1000000000;
+
+        int ret = 0;
+
+        while (l <= r) {
+            int mid = (l + r) / 2;
+            long sum = 0;
+            for (int i = 0; i < n; i++) {
+                if (a[i] <= mid)
+                    continue;
+                sum += (a[i] - mid);
             }
-            if(cnt >= k) l = m + 1;
-            else r = m - 1;
+            if (sum < m) {
+                r = mid - 1;
+            } else {
+                ret = mid;
+                l = mid + 1;
+            }
         }
-        System.out.println(l - 1);
+        System.out.println(ret);
     }
 }

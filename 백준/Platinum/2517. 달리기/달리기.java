@@ -42,7 +42,7 @@ public class Main {
             return x.second - y.second;
         });
         for (int i = 0; i < n; i++) {
-            a[i] = new Pair(a[i].first, i + 1);
+            a[i].second = i + 1;
         }
         Arrays.sort(a, (x, y) -> {
             return x.first - y.first;
@@ -56,6 +56,6 @@ public class Main {
             update(rank);
         }
 
-        System.out.println(ret);
+        System.out.print(ret);
     }
 }

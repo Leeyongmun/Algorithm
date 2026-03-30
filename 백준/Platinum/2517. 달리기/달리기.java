@@ -2,15 +2,6 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static class Pair {
-        int first, second;
-
-        Pair(int first, int second) {
-            this.first = first;
-            this.second = second;
-        }
-    }
-
     static int n;
     static int[] tree;
     static StringBuilder ret = new StringBuilder();
@@ -34,19 +25,23 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
-        Pair[] a = new Pair[n];
-        for (int i = 0; i < n; i++) {
-            a[i] = new Pair(i + 1, Integer.parseInt(br.readLine()));
+        int[] arr = new int[n];
+        for(int i = 0; i < n; i++){
+            arr[i] = Integer.parseInt(br.readLine());
         }
-        Arrays.sort(a, (x, y) -> Integer.compare(x.second, y.second));
-        for (int i = 0; i < n; i++) {
-            a[i].second = i + 1;
-        }
-        Arrays.sort(a, (x, y) -> Integer.compare(x.first, y.first));
 
+        int[] sorted = arr.clone();
+        Arrays.sort(sorted);
+
+        int[] comp = new int[n];
+        for(int i = 0; i < n; i++){
+            comp[i] = Arrays.binarySearch(sorted, arr[i]) + 1;
+        }
         tree = new int[n + 1];
-        for (int i = 0; i < n; i++) {
-            int rank = a[i].second;
+        
+        for(int i = 0; i < n; i++){
+            int rank = comp[i];
+
             int faster = i - sum(rank);
             ret.append(faster + 1).append('\n');
             update(rank);

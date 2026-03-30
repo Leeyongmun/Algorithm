@@ -38,15 +38,11 @@ public class Main {
         for (int i = 0; i < n; i++) {
             a[i] = new Pair(i + 1, Integer.parseInt(br.readLine()));
         }
-        Arrays.sort(a, (x, y) -> {
-            return x.second - y.second;
-        });
+        Arrays.sort(a, (x, y) -> Integer.compare(x.second, y.second));
         for (int i = 0; i < n; i++) {
             a[i].second = i + 1;
         }
-        Arrays.sort(a, (x, y) -> {
-            return x.first - y.first;
-        });
+        Arrays.sort(a, (x, y) -> Integer.compare(x.first, y.first));
 
         tree = new int[n + 1];
         for (int i = 0; i < n; i++) {

@@ -10,10 +10,10 @@ using namespace std;
 int n;
 string s;
 
-int H[100001];
-int SH[100001];
-int KSH[100001];
-int DKSH[100001];
+long long H[100001];
+long long SH[100001];
+long long KSH[100001];
+long long DKSH[100001];
 
 int main() {
 	ios::sync_with_stdio(false);
